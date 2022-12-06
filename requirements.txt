@@ -2,3 +2,4 @@ django
 pandas
 numpy
 requests
+python-dotenv
