@@ -74,6 +74,10 @@ TEMPLATES = [
     },
 ]
 
+FIXTURE_DIRS = [
+    BASE_DIR / 'fixtures',
+]
+
 WSGI_APPLICATION = 'sports_bet_site.wsgi.application'
 
 

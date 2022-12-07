@@ -1,0 +1,10 @@
+[
+    {
+        "model": "odds.sport",
+        "pk": 1,
+        "fields": {
+            "key": "americanfootball_nfl", 
+            "title": "NFL"
+        }
+    }
+]

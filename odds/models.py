@@ -3,7 +3,7 @@ from django.db import models
 class Sport(models.Model):
     key = models.CharField(primary_key=True, max_length=50, unique=True)
     title = models.CharField(max_length=50, unique=True)
-    last_update_time = models.DateTimeField()
+    last_update_time = models.DateTimeField(blank=True, null=True)
 
 class Game(models.Model):
     id = models.CharField(primary_key=True, max_length=50, unique=True)
@@ -16,13 +16,10 @@ class Bookmaker(models.Model):
     key = models.CharField(primary_key=True, max_length=50, unique=True)
     title = models.CharField(max_length=50, unique=True)
 
-class GameOdds(models.Model):
+class BetOdds(models.Model):
     game = models.ForeignKey(Game, on_delete=models.DO_NOTHING, null=True, blank=True)
     bookmaker = models.ForeignKey(Bookmaker, on_delete=models.DO_NOTHING, null=True, blank=True)
     last_update_time = models.DateTimeField()
-
-class Outcome(models.Model):
-    book_game = models.ForeignKey(GameOdds, on_delete=models.DO_NOTHING, null=True, blank=True)
     market = models.CharField(max_length=50)
     name_1 = models.CharField(max_length=50)
     price_1 = models.SmallIntegerField()

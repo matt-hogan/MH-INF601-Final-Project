@@ -1,0 +1,18 @@
+[
+    {
+        "model": "odds.bookmaker",
+        "pk": 1,
+        "fields": {
+            "key": "draftkings", 
+            "title": "DraftKings"
+        }
+    },
+    {
+        "model": "odds.bookmaker",
+        "pk": 2,
+        "fields": {
+            "key": "fanduel", 
+            "title": "FanDuel"
+        }
+    }
+]

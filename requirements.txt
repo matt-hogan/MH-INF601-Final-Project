@@ -1,5 +1,6 @@
 django
+django-environ
 pandas
 numpy
 requests
-python-dotenv
+pytz
