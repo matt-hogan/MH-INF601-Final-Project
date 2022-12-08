@@ -6,5 +6,29 @@
             "key": "americanfootball_nfl", 
             "title": "NFL"
         }
+    },
+    {
+        "model": "odds.sport",
+        "pk": 2,
+        "fields": {
+            "key": "americanfootball_ncaaf", 
+            "title": "NCAAF"
+        }
+    },
+    {
+        "model": "odds.sport",
+        "pk": 3,
+        "fields": {
+            "key": "basketball_nba", 
+            "title": "NBA"
+        }
+    },
+    {
+        "model": "odds.sport",
+        "pk": 3,
+        "fields": {
+            "key": "basketball_ncaab", 
+            "title": "NCAAB"
+        }
     }
 ]

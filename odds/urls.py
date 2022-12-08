@@ -4,5 +4,5 @@ from . import views
 
 app_name = "odds"
 urlpatterns = [
-    path("nfl/", views.nfl_odds, name="nfl_odds"),
+    path("<str:sport>/", views.sport_odds, name="sport_odds"),
 ]

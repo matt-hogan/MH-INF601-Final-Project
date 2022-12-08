@@ -14,5 +14,29 @@
             "key": "fanduel", 
             "title": "FanDuel"
         }
+    },
+    {
+        "model": "odds.bookmaker",
+        "pk": 3,
+        "fields": {
+            "key": "pointsbetus", 
+            "title": "PointsBet"
+        }
+    },
+    {
+        "model": "odds.bookmaker",
+        "pk": 4,
+        "fields": {
+            "key": "betmgm", 
+            "title": "BetMGM"
+        }
+    },
+    {
+        "model": "odds.bookmaker",
+        "pk": 5,
+        "fields": {
+            "key": "barstool", 
+            "title": "Barstool"
+        }
     }
 ]

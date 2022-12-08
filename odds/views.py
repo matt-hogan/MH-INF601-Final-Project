@@ -6,18 +6,19 @@ import pytz
 from .models import Sport, Game, Bookmaker, BetOdds
 from .odds_api import OddsAPI
 
-def nfl_odds(request):
-    sport = "americanfootball_nfl"
-    books = "draftkings,fanduel"
+def sport_odds(request, sport):
+    # TODO: if invalid sport, retdirect to all odds page, /odds/
+    sport_key = Sport.objects.filter(title=sport)[0].key
+    books = ",".join([book.key for book in Bookmaker.objects.get_queryset()]) # TODO: for now get all books, add settings for user to change
     # Update sport odds every five minutes
     now = datetime.datetime.now(pytz.timezone("UTC"))
-    if not Sport.objects.get(key=sport).last_update_time or Sport.objects.get(key=sport).last_update_time + datetime.timedelta(minutes=5) < now:
+    if not Sport.objects.get(key=sport_key).last_update_time or Sport.objects.get(key=sport_key).last_update_time + datetime.timedelta(minutes=500000) < now:
         api = OddsAPI(settings.ODDS_API_KEY)
-        nfl_odds = api.get_odds(sport, books)
+        nfl_odds = api.get_odds(sport_key, books)
         add_odds_to_db(nfl_odds)
-        Sport.objects.filter(key=sport).update(last_update_time=now)
+        Sport.objects.filter(key=sport_key).update(last_update_time=now)
 
-    formatted_odds = format_odds_for_html(sport, now)
+    formatted_odds = format_odds_for_html(sport_key, now)
     context = {
         "odds": formatted_odds
     }
@@ -60,6 +61,7 @@ def add_odds_to_db(game_odds):
 
 def format_odds_for_html(sport, now):
     """ Retrieves odds from the database for the given sport and returns them formatted for use in the html """
+    # Filters out games that have already been started or commpleted
     odds = BetOdds.objects.select_related().filter(game__sport__key=sport, game__commence_time__gt=now)
     game_odds_list = []
     games_added = []
