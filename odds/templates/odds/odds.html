@@ -1,9 +1,52 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Odds{% endblock %}</h1>
+    <h1>{% block title %}Odds{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-  <p>Test</p>
+    <div>
+        {% for odd in odds %}
+            <div class="row">
+                <div>
+                    <p>{{odd.info.away_team}}</p>
+                    <p>{{odd.info.home_team}}</p>
+                </div>
+                <div class="">
+                    <div>
+                        <p>{{odd.markets.h2h.Best.0.price}}</p>
+                        <p>{{odd.markets.h2h.Best.0.bookmaker}}</p>
+                    </div>
+                    <div>
+                        <p>{{odd.markets.h2h.Best.1.price}}</p>
+                        <p>{{odd.markets.h2h.Best.1.bookmaker}}</p>
+                    </div>
+                </div>
+                <div class="">
+                    <div>
+                        <p>{{odd.markets.spreads.Best.0.point}}</p>
+                        <p>{{odd.markets.spreads.Best.0.price}}</p>
+                        <p>{{odd.markets.spreads.Best.0.bookmaker}}</p>
+                    </div>
+                    <div>
+                        <p>{{odd.markets.spreads.Best.1.point}}</p>
+                        <p>{{odd.markets.spreads.Best.1.price}}</p>
+                        <p>{{odd.markets.spreads.Best.1.bookmaker}}</p>
+                    </div>
+                </div>
+                <div class="">
+                    <div>
+                        <p>O{{odd.markets.totals.Best.0.point}}</p>
+                        <p>{{odd.markets.totals.Best.0.price}}</p>
+                        <p>{{odd.markets.totals.Best.0.bookmaker}}</p>
+                    </div>
+                    <div>
+                        <p>U{{odd.markets.totals.Best.1.point}}</p>
+                        <p>{{odd.markets.totals.Best.1.price}}</p>
+                        <p>{{odd.markets.totals.Best.1.bookmaker}}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

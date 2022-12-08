@@ -17,6 +17,7 @@ class GameAdmin(admin.ModelAdmin):
 class BetOddsAdmin(admin.ModelAdmin):
     # fields = [ "market", "name_1", "price_1", "point_1", "name_2", "price_2", "point_2", "last_update_time" ]
     list_display = [
+        "get_sport",
         "get_game",
         "get_bookmaker",
         "market",
@@ -34,6 +35,9 @@ class BetOddsAdmin(admin.ModelAdmin):
 
     def get_bookmaker(self, obj):
         return obj.bookmaker.title
+
+    def get_sport(self, obj):
+        return obj.game.sport.title
 
 
 admin.site.register(Sport, SportAdmin)

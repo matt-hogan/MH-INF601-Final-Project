@@ -7,8 +7,6 @@ class OddsAPI:
 
     def get_odds(self, sport: str, bookmakers: str):
         try:
-            # load_dotenv("../../.env")
-            # os.environ["API-KEY"]
             url = f"{self.base_url}/v4/sports/{sport}/odds/"
             params = {
                 "apiKey": self.api_key,
