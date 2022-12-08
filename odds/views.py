@@ -1,23 +1,35 @@
 import datetime
 from django.conf import settings
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 import pytz
 
 from .models import Sport, Game, Bookmaker, BetOdds
 from .odds_api import OddsAPI
 
+def odds_home(request):
+    context = {
+        "sports": Sport.objects.get_queryset()
+    }
+    return render(request, "odds/sports.html", context)
+
+
 def sport_odds(request, sport):
-    # TODO: if invalid sport, retdirect to all odds page, /odds/
-    sport_key = Sport.objects.filter(title=sport)[0].key
+    sport_object = Sport.objects.filter(title=sport.upper())
+    if not sport_object:
+        return HttpResponseRedirect(reverse("odds:odds_home"))
+    sport_key = sport_object[0].key
     books = ",".join([book.key for book in Bookmaker.objects.get_queryset()]) # TODO: for now get all books, add settings for user to change
     # Update sport odds every five minutes
     now = datetime.datetime.now(pytz.timezone("UTC"))
     if not Sport.objects.get(key=sport_key).last_update_time or Sport.objects.get(key=sport_key).last_update_time + datetime.timedelta(minutes=500000) < now:
         api = OddsAPI(settings.ODDS_API_KEY)
-        nfl_odds = api.get_odds(sport_key, books)
-        add_odds_to_db(nfl_odds)
+        odds = api.get_odds(sport_key, books)
+        add_odds_to_db(odds)
         Sport.objects.filter(key=sport_key).update(last_update_time=now)
 
+    # TODO: Store formatted_odds in database to only retrieve when new odds are polled
     formatted_odds = format_odds_for_html(sport_key, now)
     context = {
         "odds": formatted_odds
@@ -84,6 +96,41 @@ def format_odds_for_html(sport, now):
                     "point": odd.point_2,
                 }
             ]
+            # Stores the best odds from each market for each game
+            if "Best" not in game_markets[odd.market].keys():
+                game_markets[odd.market]["Best"] = [
+                    {
+                        "name": odd.name_1,
+                        "price": odd.price_1,
+                        "point": odd.point_1,
+                        "bookmaker": odd.bookmaker.title,
+                    },
+                    {
+                        "name": odd.name_2,
+                        "price": odd.price_2,
+                        "point": odd.point_2,
+                        "bookmaker": odd.bookmaker.title,
+                    }
+                ]
+            else:
+                # Check if best odds can be updated
+                best_odds = game_markets[odd.market]["Best"]
+                current_odds = [{"name": odd.name_1, "price": odd.price_1, "point": odd.point_1}, {"name": odd.name_2, "price": odd.price_2, "point": odd.point_2}]
+                for best_odd, current_odd in zip(best_odds, current_odds):
+                    if odd.market == "h2h" or odd.market == "spreads" or (odd.market == "totals" and current_odd["name"] == "Under"):
+                        if not best_odd["point"] or current_odd["point"] >= best_odd["point"]:
+                            if not best_odd["price"] or current_odd["price"] > best_odd["price"]:
+                                best_odd["name"] = current_odd["name"]
+                                best_odd["price"] = current_odd["price"]
+                                best_odd["point"] = current_odd["point"]
+                                best_odd["bookmaker"] = odd.bookmaker.title
+                    elif odd.market == "totals" and current_odd["name"] == "Over":
+                        if not best_odd["point"] or current_odd["point"] <= best_odd["point"]:
+                            if not best_odd["price"] or current_odd["price"] > best_odd["price"]:
+                                best_odd["name"] = current_odd["name"]
+                                best_odd["price"] = current_odd["price"]
+                                best_odd["point"] = current_odd["point"]
+                                best_odd["bookmaker"] = odd.bookmaker.title
         else:
             games_added.append(odd.game.id)
             game_odds_list.append({
@@ -106,42 +153,22 @@ def format_odds_for_html(sport, now):
                                 "price": odd.price_2,
                                 "point": odd.point_2,
                             }
-                        ]
+                        ],
+                        "Best": [
+                            {
+                                "name": odd.name_1,
+                                "price": odd.price_1,
+                                "point": odd.point_1,
+                                "bookmaker": odd.bookmaker.title,
+                            },
+                            {
+                                "name": odd.name_2,
+                                "price": odd.price_2,
+                                "point": odd.point_2,
+                                "bookmaker": odd.bookmaker.title,
+                            }
+                        ],
                     }
                 }
             })
-    # Calculate the best odds for game's markets
-    for game in game_odds_list:
-        for market, book_odds in game["markets"].items(): 
-            best_odds = [{"name": None, "price": None, "point": None, "bookmaker": None}, {"name": None, "price": None, "point": None, "bookmaker": None}]
-            for book, odds_list in book_odds.items():
-                for odd, best_odd in zip(odds_list, best_odds):
-                    if market == "h2h":
-                        if not best_odd["price"] or odd["price"] > best_odd["price"]:
-                            best_odd["name"] = odd["name"]
-                            best_odd["price"] = odd["price"]
-                            best_odd["bookmaker"] = book
-                    elif market == "spreads":
-                        if not best_odd["point"] or odd["point"] >= best_odd["point"]:
-                            if not best_odd["price"] or odd["price"] > best_odd["price"]:
-                                best_odd["name"] = odd["name"]
-                                best_odd["price"] = odd["price"]
-                                best_odd["point"] = odd["point"]
-                                best_odd["bookmaker"] = book
-                    elif market == "totals":
-                        if odd["name"] == "Under":
-                            if not best_odd["point"] or odd["point"] >= best_odd["point"]:
-                                if not best_odd["price"] or odd["price"] > best_odd["price"]:
-                                    best_odd["name"] = odd["name"]
-                                    best_odd["price"] = odd["price"]
-                                    best_odd["point"] = odd["point"]
-                                    best_odd["bookmaker"] = book
-                        elif odd["name"] == "Over":
-                            if not best_odd["point"] or odd["point"] <= best_odd["point"]:
-                                if not best_odd["price"] or odd["price"] > best_odd["price"]:
-                                    best_odd["name"] = odd["name"]
-                                    best_odd["price"] = odd["price"]
-                                    best_odd["point"] = odd["point"]
-                                    best_odd["bookmaker"] = book
-            book_odds["Best"] = best_odds
     return game_odds_list
