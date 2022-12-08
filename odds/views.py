@@ -16,11 +16,12 @@ def odds_home(request):
 
 
 def sport_odds(request, sport):
-    sport_object = Sport.objects.filter(title=sport.upper())
+    sport_object = Sport.objects.filter(title=sport.upper()) # TODO: Use get_list_or_404() instead
     if not sport_object:
         return HttpResponseRedirect(reverse("odds:odds_home"))
     sport_key = sport_object[0].key
-    books = ",".join([book.key for book in Bookmaker.objects.get_queryset()]) # TODO: for now get all books, add settings for user to change
+    books_list = [book.key for book in Bookmaker.objects.get_queryset()] # TODO: for now get all books, add settings for user to change
+    books = ",".join(books_list)
     # Update sport odds every five minutes
     now = datetime.datetime.now(pytz.timezone("UTC"))
     if not Sport.objects.get(key=sport_key).last_update_time or Sport.objects.get(key=sport_key).last_update_time + datetime.timedelta(minutes=500000) < now:
@@ -30,7 +31,7 @@ def sport_odds(request, sport):
         Sport.objects.filter(key=sport_key).update(last_update_time=now)
 
     # TODO: Store formatted_odds in database to only retrieve when new odds are polled
-    formatted_odds = format_odds_for_html(sport_key, now)
+    formatted_odds = format_odds_for_html(sport_key, now, books_list)
     context = {
         "odds": formatted_odds
     }
@@ -71,10 +72,10 @@ def add_odds_to_db(game_odds):
                 )
 
 
-def format_odds_for_html(sport, now):
+def format_odds_for_html(sport, now, books_list):
     """ Retrieves odds from the database for the given sport and returns them formatted for use in the html """
     # Filters out games that have already been started or commpleted
-    odds = BetOdds.objects.select_related().filter(game__sport__key=sport, game__commence_time__gt=now)
+    odds = BetOdds.objects.select_related().filter(game__sport__key=sport, game__commence_time__gt=now, bookmaker__key__in=books_list)
     game_odds_list = []
     games_added = []
     # Combines all odds for a game into a single object

@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+    {% load odds_extras %}
     <div>
         {% for odd in odds %}
             <div class="row">
@@ -14,35 +15,35 @@
                 </div>
                 <div class="">
                     <div>
-                        <p>{{odd.markets.h2h.Best.0.price}}</p>
+                        <p>{% add_plus odd.markets.h2h.Best.0.price %}</p>
                         <p>{{odd.markets.h2h.Best.0.bookmaker}}</p>
                     </div>
                     <div>
-                        <p>{{odd.markets.h2h.Best.1.price}}</p>
+                        <p>{% add_plus odd.markets.h2h.Best.1.price %}</p>
                         <p>{{odd.markets.h2h.Best.1.bookmaker}}</p>
                     </div>
                 </div>
                 <div class="">
                     <div>
-                        <p>{{odd.markets.spreads.Best.0.point}}</p>
-                        <p>{{odd.markets.spreads.Best.0.price}}</p>
+                        <p>{% add_plus odd.markets.spreads.Best.0.point %}</p>
+                        <p>{% add_plus odd.markets.spreads.Best.0.price %}</p>
                         <p>{{odd.markets.spreads.Best.0.bookmaker}}</p>
                     </div>
                     <div>
-                        <p>{{odd.markets.spreads.Best.1.point}}</p>
-                        <p>{{odd.markets.spreads.Best.1.price}}</p>
+                        <p>{% add_plus odd.markets.spreads.Best.1.point %}</p>
+                        <p>{% add_plus odd.markets.spreads.Best.1.price %}</p>
                         <p>{{odd.markets.spreads.Best.1.bookmaker}}</p>
                     </div>
                 </div>
                 <div class="">
                     <div>
                         <p>O{{odd.markets.totals.Best.0.point}}</p>
-                        <p>{{odd.markets.totals.Best.0.price}}</p>
+                        <p>{% add_plus odd.markets.totals.Best.0.price %}</p>
                         <p>{{odd.markets.totals.Best.0.bookmaker}}</p>
                     </div>
                     <div>
                         <p>U{{odd.markets.totals.Best.1.point}}</p>
-                        <p>{{odd.markets.totals.Best.1.price}}</p>
+                        <p>{% add_plus odd.markets.totals.Best.1.price %}</p>
                         <p>{{odd.markets.totals.Best.1.bookmaker}}</p>
                     </div>
                 </div>
