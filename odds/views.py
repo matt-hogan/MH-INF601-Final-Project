@@ -8,6 +8,7 @@ import pytz
 from .models import Sport, Game, Bookmaker, BetOdds
 from .odds_api import OddsAPI
 
+
 def odds_home(request):
     context = {
         "sports": Sport.objects.get_queryset()

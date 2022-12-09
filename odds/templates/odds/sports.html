@@ -5,5 +5,11 @@
 {% endblock %}
 
 {% block content %}
-
+    <div class="">
+        <div class="">
+            {% for sport in sports %}
+                <a href="{% url 'odds:sport_odds' sport.title %}"><button class="btn ">{{sport.title}}</button></a>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
