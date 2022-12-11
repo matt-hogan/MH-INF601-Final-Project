@@ -14,6 +14,7 @@
                     <p>{{odd.info.home_team}}</p>
                 </div>
                 <div class="">
+                    <h6>Moneyline</h6>
                     <div>
                         <p>{% add_plus odd.markets.h2h.Best.0.price %}</p>
                         <p>{{odd.markets.h2h.Best.0.bookmaker}}</p>
@@ -24,6 +25,7 @@
                     </div>
                 </div>
                 <div class="">
+                    <h6>Spread</h6>
                     <div>
                         <p>{% add_plus odd.markets.spreads.Best.0.point %}</p>
                         <p>{% add_plus odd.markets.spreads.Best.0.price %}</p>
@@ -36,6 +38,7 @@
                     </div>
                 </div>
                 <div class="">
+                    <h6>Total</h6>
                     <div>
                         <p>O{{odd.markets.totals.Best.0.point}}</p>
                         <p>{% add_plus odd.markets.totals.Best.0.price %}</p>

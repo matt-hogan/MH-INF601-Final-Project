@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('odds/', include('odds.urls')),
     # path('tracker', include('tracker.urls')),
-    # path('', include('users.urls')),
+    path('', include('users.urls')),
+    path('', include('django.contrib.auth.urls')),
 ]

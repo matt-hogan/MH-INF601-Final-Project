@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Sign Up{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form class="mt-4" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Sign Up" class="mt-2 btn btn-success">
+  </form>
+{% endblock %}
