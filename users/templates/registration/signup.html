@@ -7,7 +7,17 @@
 {% block content %}
   <form class="mt-4" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+      <div class="form-group justify-content-center">
+        {% if field.errors %}
+          {% for error in field.errors %}
+            <div class="alert alert-danger w-25 m-auto" >{{ error }}</div>
+          {% endfor %}
+        {% endif %}
+        <label for="{{field.auto_id}}" class="col-2 col-form-label">{{field.label}}:</label>
+        {{field}}
+      </div>
+    {% endfor %}
     <input type="submit" value="Sign Up" class="mt-2 btn btn-success">
   </form>
 {% endblock %}

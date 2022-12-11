@@ -55,8 +55,8 @@ class AdminUserChange(forms.ModelForm):
 class AdminUserCreation(forms.ModelForm):
     CHOICES = list((item["key"], item["title"]) for item in Bookmaker.objects.values())
     bookmakers = forms.MultipleChoiceField(choices=CHOICES, widget=forms.widgets.CheckboxSelectMultiple, required=True)
-    first_name = forms.CharField(max_length=50, required=True)
-    last_name = forms.CharField(max_length=50, required=True)
+    first_name = forms.CharField(max_length=50, required=True, label="First Name")
+    last_name = forms.CharField(max_length=50, required=True, label="Last Name")
     email = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
     password_confirm = forms.CharField(label="Confirm Password", widget=forms.PasswordInput, required=True)
@@ -70,7 +70,6 @@ class AdminUserCreation(forms.ModelForm):
     def clean_password_confirm(self):
         """ Verify passwords match """
         cleaned_data = super().clean()
-        print(cleaned_data)
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("password_confirm")
         if password1 and password2 and password1 != password2:
@@ -90,11 +89,12 @@ class AdminUserCreation(forms.ModelForm):
 
 
 class CustomLoginForm(AuthenticationForm):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["username"].widget.attrs.update({
-            "class": "col-2 col-form-label"
+            "class": ""
         })
         self.fields["password"].widget.attrs.update({
-            "class": "col-2 col-form-label"
+            "class": ""
         })

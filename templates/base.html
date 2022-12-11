@@ -6,7 +6,9 @@
     <a href="/" class="text-light btn"><h1>Sport Betting</h1></a>
     <section class="row">
       {% if request.user.is_authenticated %}
-        <h3 class="text-light mx-2 text-lg-left">{{request.user.first_name}}</h3>
+        {% if request.user.first_name %}
+            <h3 class="text-light mx-2 text-lg-left">{{request.user.first_name}}</h3>
+        {% endif %}
         <a href="{% url 'users:logout' %}"><button class="btn btn-outline-light mx-2">Log Out</button></a>
       {% else %}
         <a href="{% url 'users:login' %}"><button class="btn btn-lg btn-outline-light mx-2">Log In</button></a>

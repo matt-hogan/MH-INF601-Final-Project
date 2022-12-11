@@ -1,5 +1,6 @@
 import datetime
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -16,7 +17,7 @@ def odds_home(request):
     }
     return render(request, "odds/sports.html", context)
 
-
+@login_required
 def sport_odds(request, sport):
     sport_object = Sport.objects.filter(title=sport.upper()) # TODO: Use get_list_or_404() instead
     if not sport_object:
@@ -139,7 +140,7 @@ def format_odds_for_html(sport, now, books):
             game_odds_list.append({
                 "info": {
                     "id": odd.game.id,
-                    "time": odd.game.commence_time,
+                    "time": odd.game.commence_time.astimezone(pytz.timezone('US/Eastern')),
                     "away_team": odd.game.away_team,
                     "home_team": odd.game.home_team,
                 },
