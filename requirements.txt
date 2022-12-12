@@ -1,6 +1,5 @@
 django
 django-environ
 pandas
-numpy
 requests
 pytz

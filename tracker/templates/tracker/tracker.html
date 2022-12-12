@@ -52,6 +52,7 @@
                         <th>Odds</th>
                         <th>Winnings</th>
                         <th>Result</th>
+                        <th>Edit</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -67,9 +68,10 @@
                             <td>{{row.odds}}</td>
                             <td>{{row.winnings}}</td>
                             <td>{{row.result}}</td>
+                            <td><a href="{% url 'tracker:update_bet' row.id %}"><button type="button" class="btn btn-primary"><i class='fa fa-solid fa-edit' style='color: white'></i></button></a></td>
                             <td>
                                 <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteBet{{row.id}}"><i class=' fa fa-solid fa-trash-can' style='color: white'></i></button>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteBet{{row.id}}"><i class='fa fa-solid fa-trash-can' style='color: white'></i></button>
 
                                 <!-- Modal -->
                                 <div class="modal fade" id="deleteBet{{row.id}}" tabindex="-1" role="dialog" aria-labelledby="deleteBetTitle" aria-hidden="true">

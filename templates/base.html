@@ -7,7 +7,7 @@
 </head>
 <body>
     <nav class="navbar navbar-dark bg-dark">
-        <a href="/" class="text-light btn"><h1>Odd Comparison and Tracking</h1></a>
+        <a href="/" class="text-light btn"><h1>Odd Comparison and Bet Tracking</h1></a>
         <section class="row">
             {% if request.user.is_authenticated %}
                 {% if request.user.first_name %}
@@ -16,7 +16,7 @@
                 <a href="{% url 'users:logout' %}"><button class="btn btn-outline-light mx-2">Log Out</button></a>
             {% else %}
                 <a href="{% url 'users:login' %}"><button class="btn btn-lg btn-outline-light mx-2">Log In</button></a>
-                <a href="{% url 'users:signup' %}"><button class="btn btn-lg btn-outline-light mx-2">Register</button></a>
+                <a href="{% url 'users:signup' %}"><button class="btn btn-lg btn-outline-light mx-2">Sign Up</button></a>
             {% endif %}
         </section>
     </nav>

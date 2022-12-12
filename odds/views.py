@@ -26,7 +26,7 @@ def sport_odds(request, sport):
     books = CustomUser.objects.filter(email=request.user.email)[0].bookmakers
     # Update sport odds every five minutes
     now = datetime.datetime.now(pytz.timezone("UTC"))
-    if not Sport.objects.get(key=sport_key).last_update_time or Sport.objects.get(key=sport_key).last_update_time + datetime.timedelta(minutes=500000) < now:
+    if not Sport.objects.get(key=sport_key).last_update_time or Sport.objects.get(key=sport_key).last_update_time + datetime.timedelta(minutes=5) < now:
         api = OddsAPI(settings.ODDS_API_KEY)
         odds = api.get_odds(sport_key, books)
         add_odds_to_db(odds)
