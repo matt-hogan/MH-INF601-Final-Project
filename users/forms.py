@@ -7,7 +7,13 @@ from odds.models import Bookmaker
 
 
 class AdminUserChange(forms.ModelForm):
-    CHOICES = list((item["key"], item["title"]) for item in Bookmaker.objects.values())
+    CHOICES = (
+        ('draftkings', 'DraftKings'),
+        ('fanduel', 'FanDuel'),
+        ('pointsbetus', 'PointBet'),
+        ('betmgm', 'BetMGM'),
+        ('barstool', 'Barstool'),
+    )
     bookmakers = forms.MultipleChoiceField(choices=CHOICES, widget=forms.widgets.CheckboxSelectMultiple)
     old_password = forms.CharField(widget=forms.PasswordInput, required=False)
     new_password = forms.CharField(widget=forms.PasswordInput, required=False)
@@ -53,7 +59,13 @@ class AdminUserChange(forms.ModelForm):
 
 
 class AdminUserCreation(forms.ModelForm):
-    CHOICES = list((item["key"], item["title"]) for item in Bookmaker.objects.values())
+    CHOICES = (
+        ('draftkings', 'DraftKings'),
+        ('fanduel', 'FanDuel'),
+        ('pointsbetus', 'PointBet'),
+        ('betmgm', 'BetMGM'),
+        ('barstool', 'Barstool'),
+    )
     bookmakers = forms.MultipleChoiceField(choices=CHOICES, widget=forms.widgets.CheckboxSelectMultiple, required=True)
     first_name = forms.CharField(max_length=50, required=True, label="First Name")
     last_name = forms.CharField(max_length=50, required=True, label="Last Name")
