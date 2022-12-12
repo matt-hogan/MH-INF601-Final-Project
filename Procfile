@@ -1,1 +1,2 @@
-web: gunicorn sports_bet_site.wsgi:application --log-file -
+release: python manage.py migrate
+web: gunicorn sports_bet_site.wsgi
