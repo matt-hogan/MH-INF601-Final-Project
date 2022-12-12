@@ -10,11 +10,26 @@ from .models import TrackedBet
 @login_required
 def tracker(request):
     bets = TrackedBet.objects.filter(user=request.user).values()
+    profit = get_profit(bets)
     context = {
         "df": bets,
-        "add_form": TrackedBetForm()
+        "add_form": TrackedBetForm(),
+        "profit": "%.2f"%profit
     }
     return render(request, "tracker/tracker.html", context)
+
+
+def get_profit(bets):
+    """  """
+    profit = 0
+    for bet in bets:
+        if bet["result"] == 'win':
+            profit += bet["winnings"]
+            profit += bet["bet_amount"]
+        elif bet["result"] == 'loss':
+            profit += bet["winnings"]
+            profit += bet["bet_amount"]
+    return profit
 
 
 @login_required
@@ -30,7 +45,7 @@ def create_tracked_bet(request):
             points=request.POST["points"],
             bet_amount=request.POST["bet_amount"],
             odds=request.POST["odds"],
-            winnings=request.POST["bet_amount"],
+            winnings=request.POST["winnings"],
             result=request.POST["result"],
         )
     return HttpResponseRedirect(reverse("tracker:track"))
@@ -47,7 +62,7 @@ def update_tracked_bet(request, tracked_bet_id):
             points=request.POST["points"],
             bet_amount=request.POST["bet_amount"],
             odds=request.POST["odds"],
-            winnings=request.POST["bet_amount"],
+            winnings=request.POST["winnings"],
             result=request.POST["result"],
         )
         return HttpResponseRedirect(reverse("tracker:track"))
