@@ -12,6 +12,7 @@ class SignUpView(CreateView):
     template_name = "registration/signup.html"
 
     def form_valid(self, form):
+        """ Authenticates and logs the user in after account creation """
         form.save()
         email = self.request.POST["email"]
         password = self.request.POST["password"]

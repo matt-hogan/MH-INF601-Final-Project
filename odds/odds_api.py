@@ -6,6 +6,7 @@ class OddsAPI:
         self.api_key = api_key
 
     def get_odds(self, sport: str, bookmakers: str):
+        """ Returns all market odds from provided bookmakers for the provided sport in json format """
         try:
             url = f"{self.base_url}/v4/sports/{sport}/odds/"
             params = {

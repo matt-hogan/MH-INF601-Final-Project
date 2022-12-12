@@ -9,7 +9,6 @@ from odds.models import Bookmaker
 class AdminUserChange(forms.ModelForm):
     CHOICES = list((item["key"], item["title"]) for item in Bookmaker.objects.values())
     bookmakers = forms.MultipleChoiceField(choices=CHOICES, widget=forms.widgets.CheckboxSelectMultiple)
-
     old_password = forms.CharField(widget=forms.PasswordInput, required=False)
     new_password = forms.CharField(widget=forms.PasswordInput, required=False)
     new_password_confirm = forms.CharField(label="Confirm Password", widget=forms.PasswordInput, required=False)
@@ -19,6 +18,7 @@ class AdminUserChange(forms.ModelForm):
         self.initial['bookmakers'] = CustomUser.objects.filter(email=self.instance)[0].bookmakers.split(",")
 
     def clean_bookmakers(self):
+        """ Convert list to comma separated string """
         data = self.cleaned_data["bookmakers"]
         data_as_string = ",".join(data)
         return data_as_string
@@ -77,6 +77,7 @@ class AdminUserCreation(forms.ModelForm):
         return password1
 
     def save(self, commit=True):
+        """ Add the new user """
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
         if commit:
@@ -89,7 +90,6 @@ class AdminUserCreation(forms.ModelForm):
 
 
 class CustomLoginForm(AuthenticationForm):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["username"].widget.attrs.update({

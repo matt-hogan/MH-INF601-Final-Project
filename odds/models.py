@@ -5,6 +5,9 @@ class Sport(models.Model):
     title = models.CharField(max_length=50, unique=True)
     last_update_time = models.DateTimeField(blank=True, null=True)
 
+    def __str__(self):
+        return self.title
+
 class Game(models.Model):
     id = models.CharField(primary_key=True, max_length=50, unique=True)
     sport = models.ForeignKey(Sport, on_delete=models.DO_NOTHING, null=True, blank=True)
@@ -18,6 +21,9 @@ class Game(models.Model):
 class Bookmaker(models.Model):
     key = models.CharField(primary_key=True, max_length=50, unique=True)
     title = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.title
 
 class BetOdds(models.Model):
     game = models.ForeignKey(Game, on_delete=models.DO_NOTHING, null=True, blank=True)

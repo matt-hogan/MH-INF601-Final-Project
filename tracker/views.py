@@ -9,6 +9,7 @@ from .models import TrackedBet
 
 @login_required
 def tracker(request):
+    """ Main page for displaying the tracker table """
     bets = TrackedBet.objects.filter(user=request.user).values()
     profit = get_profit(bets)
     context = {
@@ -20,7 +21,7 @@ def tracker(request):
 
 
 def get_profit(bets):
-    """  """
+    """ Returns the profit for the provided bets based on bet wins and losses """
     profit = 0
     for bet in bets:
         if bet["result"] == 'win':
@@ -34,7 +35,7 @@ def get_profit(bets):
 
 @login_required
 def create_tracked_bet(request):
-    """  """
+    """ Adds a new bet to the TrackedBet db """
     if request.POST:
         TrackedBet.objects.create(
             user=request.user,
@@ -53,6 +54,7 @@ def create_tracked_bet(request):
 
 @login_required
 def update_tracked_bet(request, tracked_bet_id):
+    """ Updates and existing bet in the TrackedBet db """
     if request.POST:
         TrackedBet.objects.filter(id=tracked_bet_id).update(
             sportsbook=request.POST["sportsbook"],
@@ -76,6 +78,7 @@ def update_tracked_bet(request, tracked_bet_id):
 
 @login_required
 def delete_tracked_bet(request, tracked_bet_id):
+    """ Deletes a bet from the TrackedBet db """
     bet = get_object_or_404(TrackedBet, pk=tracked_bet_id)
     bet.delete()
     return HttpResponseRedirect(reverse("tracker:track"))

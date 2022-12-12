@@ -4,14 +4,9 @@ from django.utils.translation import gettext_lazy as _
 from odds.models import Bookmaker
 
 class CustomUserManager(BaseUserManager):
-    """
-    Custom user model manager where email is the unique identifiers
-    for authentication instead of usernames.
-    """
+    """ Custom user model where email are the unique identifier instead of usernames """
     def create_user(self, email, password, **extra_fields):
-        """
-        Create and save a User with the given email and password.
-        """
+        """ Create and save a User with the given email and password. """
         email = email.strip()
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -19,9 +14,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password, **extra_fields):
-        """
-        Create and save a SuperUser with the given email and password.
-        """
+        """ Create and save a SuperUser with the given email and password. """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)

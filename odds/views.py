@@ -2,7 +2,7 @@ import datetime
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 import pytz
 
@@ -12,17 +12,18 @@ from users.models import CustomUser
 
 
 def odds_home(request):
+    """ Main home page for the entire website """
     context = {
         "sports": Sport.objects.get_queryset()
     }
     return render(request, "home.html", context)
 
+
 @login_required
 def sport_odds(request, sport):
-    sport_object = Sport.objects.filter(title=sport.upper())
-    if not sport_object:
-        return HttpResponseRedirect(reverse("odds:odds_home"))
-    sport_key = sport_object[0].key
+    """ Displays all upcoming games and best odds for the provided sport """
+    sport_object = get_object_or_404(Sport, title=sport.upper())
+    sport_key = sport_object.key
     books = CustomUser.objects.filter(email=request.user.email)[0].bookmakers
     # Update sport odds every five minutes
     now = datetime.datetime.now(pytz.timezone("UTC"))
@@ -135,6 +136,7 @@ def format_odds_for_html(sport, now, books):
                                 best_odd["point"] = current_odd["point"]
                                 best_odd["bookmaker"] = odd.bookmaker.title
         else:
+            # Add new games and odds
             games_added.append(odd.game.id)
             game_odds_list.append({
                 "info": {

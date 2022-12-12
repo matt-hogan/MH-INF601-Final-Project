@@ -26,7 +26,7 @@ class TrackedBet(models.Model):
     points = models.FloatField(blank=True, null=True)
     bet_amount = models.FloatField(validators=[validate_bet_amount])
     odds = models.IntegerField(validators=[validate_odds])
-    winnings = models.FloatField(blank=True, null=True) # For both potential and realized
+    winnings = models.FloatField(blank=True, null=True)
     result = models.CharField(choices=RESULT_CHOICES, default='pending', max_length=20)
 
     REQUIRED_FIELDS = [ 'user', 'sportsbook', 'sport', 'market', 'description', 'bet_amount', 'odds', 'winnings', 'result' ]
