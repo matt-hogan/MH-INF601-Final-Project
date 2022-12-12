@@ -4,3 +4,6 @@ pandas
 requests
 pytz
 gunicorn
+psycopg2
+django-heroku
+whitenoise
