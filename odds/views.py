@@ -19,7 +19,7 @@ def odds_home(request):
 
 @login_required
 def sport_odds(request, sport):
-    sport_object = Sport.objects.filter(title=sport.upper()) # TODO: Use get_list_or_404() instead
+    sport_object = Sport.objects.filter(title=sport.upper())
     if not sport_object:
         return HttpResponseRedirect(reverse("odds:odds_home"))
     sport_key = sport_object[0].key
@@ -32,7 +32,6 @@ def sport_odds(request, sport):
         add_odds_to_db(odds)
         Sport.objects.filter(key=sport_key).update(last_update_time=now)
 
-    # TODO: Store formatted_odds in database to only retrieve when new odds are polled
     formatted_odds = format_odds_for_html(sport_key, now, books)
     context = {
         "odds": formatted_odds

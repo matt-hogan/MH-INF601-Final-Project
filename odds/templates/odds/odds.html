@@ -6,48 +6,79 @@
 
 {% block content %}
     {% load odds_extras %}
-    <div>
+    <div class="container">
+        <div class="row">
+            <h6 class="col"></h6>
+            <h6 class="col">Moneyline</h6>
+            <h6 class="col">Spread</h6>
+            <h6 class="col">Total</h6>
+        </div>
         {% for odd in odds %}
-            <div class="row">
-                <div>
-                    <p>{{odd.markets.h2h.Best.0.name}}</p>
-                    <p>{{odd.markets.h2h.Best.1.name}}</p>
-                </div>
-                <div class="">
-                    <h6>Moneyline</h6>
-                    <div>
-                        <p>{% add_plus odd.markets.h2h.Best.0.price %}</p>
-                        <p>{{odd.markets.h2h.Best.0.bookmaker}}</p>
+            <div class="row align-items-center border rounded m-2 bg-light">
+                <div class="col justify-content-around">
+                    <div class="row justify-content-center">
+                        <p>{{odd.markets.spreads.Best.0.name}}</p>
                     </div>
-                    <div>
-                        <p>{% add_plus odd.markets.h2h.Best.1.price %}</p>
-                        <p>{{odd.markets.h2h.Best.1.bookmaker}}</p>
+                    <div class="row justify-content-center">
+                        <p>{{odd.markets.spreads.Best.1.name}}</p>
                     </div>
                 </div>
-                <div class="">
-                    <h6>Spread</h6>
-                    <div>
-                        <p>{% add_plus odd.markets.spreads.Best.0.point %}</p>
-                        <p>{% add_plus odd.markets.spreads.Best.0.price %}</p>
-                        <p>{{odd.markets.spreads.Best.0.bookmaker}}</p>
+                <div class="col">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <p>{% add_plus odd.markets.h2h.Best.0.price %}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{odd.markets.h2h.Best.0.bookmaker}}</p>
+                        </div>
                     </div>
-                    <div>
-                        <p>{% add_plus odd.markets.spreads.Best.1.point %}</p>
-                        <p>{% add_plus odd.markets.spreads.Best.1.price %}</p>
-                        <p>{{odd.markets.spreads.Best.1.bookmaker}}</p>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <p>{% add_plus odd.markets.h2h.Best.1.price %}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{odd.markets.h2h.Best.1.bookmaker}}</p>
+                        </div>
                     </div>
                 </div>
-                <div class="">
-                    <h6>Total</h6>
-                    <div>
-                        <p>O{{odd.markets.totals.Best.0.point}}</p>
-                        <p>{% add_plus odd.markets.totals.Best.0.price %}</p>
-                        <p>{{odd.markets.totals.Best.0.bookmaker}}</p>
+                <div class="col border border-top-0 border-bottom-0">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <p>{% add_plus odd.markets.spreads.Best.0.point %}</p>
+                            <p>{% add_plus odd.markets.spreads.Best.0.price %}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{odd.markets.spreads.Best.0.bookmaker}}</p>
+                        </div>
                     </div>
-                    <div>
-                        <p>U{{odd.markets.totals.Best.1.point}}</p>
-                        <p>{% add_plus odd.markets.totals.Best.1.price %}</p>
-                        <p>{{odd.markets.totals.Best.1.bookmaker}}</p>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <p>{% add_plus odd.markets.spreads.Best.1.point %}</p>
+                            <p>{% add_plus odd.markets.spreads.Best.1.price %}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{odd.markets.spreads.Best.1.bookmaker}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <p>O{{odd.markets.totals.Best.0.point}}</p>
+                            <p>{% add_plus odd.markets.totals.Best.0.price %}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{odd.markets.totals.Best.0.bookmaker}}</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <p>U{{odd.markets.totals.Best.1.point}}</p>
+                            <p>{% add_plus odd.markets.totals.Best.1.price %}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{odd.markets.totals.Best.1.bookmaker}}</p>
+                        </div>
                     </div>
                 </div>
             </div>

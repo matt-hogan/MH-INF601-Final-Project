@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %}Sports{% endblock %}</h1>
+    <h1>{% block title %}Home{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-    <div class="">
-        <div class="">
-            {% for sport in sports %}
-                <a href="{% url 'odds:sport_odds' sport.title %}"><button class="btn ">{{sport.title}}</button></a>
-            {% endfor %}
+    {% if request.user.is_authenticated %}
+        <div class="container">
+            <div class="col">
+                {% for sport in sports %}
+                    <a href="{% url 'odds:sport_odds' sport.title %}"><button class="btn btn-primary m-2">{{sport.title}}</button></a>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <a href="{% url 'tracker:track' %}"><button class="btn btn-success m-4">Bet Tracker</button></a>
+            </div>
         </div>
-        <div class="">
-            <a href="{% url 'tracker:track' %}"><button class="btn ">Tracker</button></a>
-        </div>
-    </div>
+    {% else %}
+        <h2 class="my-5">Sign In to Compare Odds and Track Bets</h2>
+    {% endif %}
 {% endblock %}
