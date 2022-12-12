@@ -3,4 +3,4 @@ django-environ
 pandas
 requests
 pytz
-gunicron
+gunicorn
