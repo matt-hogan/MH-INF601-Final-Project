@@ -12,6 +12,9 @@ class Game(models.Model):
     home_team = models.CharField(max_length=50)
     away_team = models.CharField(max_length=50)
 
+    def __str__(self):
+        return f"{self.away_team} vs {self.home_team}"
+
 class Bookmaker(models.Model):
     key = models.CharField(primary_key=True, max_length=50, unique=True)
     title = models.CharField(max_length=50, unique=True)

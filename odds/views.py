@@ -15,7 +15,7 @@ def odds_home(request):
     context = {
         "sports": Sport.objects.get_queryset()
     }
-    return render(request, "odds/sports.html", context)
+    return render(request, "home.html", context)
 
 @login_required
 def sport_odds(request, sport):
