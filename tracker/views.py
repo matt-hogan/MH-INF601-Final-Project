@@ -11,12 +11,7 @@ from .models import TrackedBet
 
 @login_required
 def tracker(request):
-    # Dispaly all tracked bet with filters
-    # Display earnings
-
     bets = TrackedBet.objects.filter(user=request.user).values()
-    bets_df = pd.DataFrame(bets)
-    # TODO: format before displaying
     context = {
         "df": bets,
         "add_form": NewTrackedBetForm()
